@@ -18,6 +18,8 @@ class flipkart():
     filter_checkbox = "//div[@class='_24_Dny']"
     filter_assert = "//div[@class='_2WkVRV']"
     filter_section = "//section[@class = 'JWMl0H _2hbLCH']"
+    max_drp_down_filter = "//div[@class='_3uDYxP']//select[@class='_2YxCDZ']"
+    price_assert = "//div[@class='_2B099V']//a//div//div[@class='_30jeq3']"
 
 #login page
     login_header = "//h3[@class = '_1hUz_t _2-K-ro']"

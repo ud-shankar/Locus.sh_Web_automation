@@ -4,6 +4,7 @@ import pytest
 from Pages.Locators import flipkart
 from Drivers.browser import driver
 from pytest_bdd import when, given, then, scenario, parsers
+from selenium.webdriver.support.ui import Select
 from Source.conftest import wait_and_send, wait_and_click, wait_till_element_present
 
 
@@ -45,19 +46,28 @@ def verify_result(function):
     if function == "search":
         category = driver.find_elements_by_xpath(flipkart.result_bread_crumbs)
         assert "Footwear" in category[-1].text
-    else:
-        wait_till_element_present("xpath", flipkart.filter_section)
+    elif function == "filter":
         time.sleep(3)
-        filter = driver.find_elements_by_xpath(flipkart.filter_assert)
-        if (len(filter) != 0):
-            pos = random.randint(0, len(filter))                            # Randomly select any product
-            assert filter[pos].text == brand_name
+        brand = driver.find_elements_by_xpath(flipkart.filter_assert)           #List of brand names
+        price = driver.find_elements_by_xpath(flipkart.price_assert)            #List of price for each item
+        if (len(brand) != 0):
+            pos = random.randint(1, 10)                            # Randomly select any product
+            assert brand[pos].text == brand_name
+            rate = (price[pos].text)
+            rate = rate.replace('₹', '')
+            rate = rate.replace(',', '')
+            assert int(rate) <= 2000                                 #Asserting applied filters
 
 
 @then("User applies filter to sort out the result")
 def filters():
-    wait_and_send("xpath", flipkart.filter_search, brand_name)
+    wait_and_send("xpath", flipkart.filter_search, brand_name)              #applying brand name filter
     wait_and_click("xpath", flipkart.filter_checkbox)
+    wait_till_element_present("xpath", flipkart.filter_section)
+    time.sleep(3)
+    select = Select(driver.find_element_by_xpath(flipkart.max_drp_down_filter))     #applying price range filter
+    select.select_by_value("2000")
+    wait_till_element_present("xpath", flipkart.filter_section)
 
 
 @then("User select any item and choose any available size")
