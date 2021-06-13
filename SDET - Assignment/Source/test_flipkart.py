@@ -88,5 +88,5 @@ def choose_item():
 @then("User clicks on buy now option and is navigated to login page")
 def buy_and_login():
     wait_and_click("xpath", flipkart.btn_proceed_to_buy)
-    wait_till_element_present("xpath", flipkart.login_header)
+    wait_till_element_present("xpath", flipkart.login_header)           #assert login page is reached on clicking buy now option
 
